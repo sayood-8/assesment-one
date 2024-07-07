@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Counter from "./components/counter";
 import Timer from "./components/timer";
+import Apicall from "./components/apicall";
 
 export default function Home() {
   return (
@@ -9,6 +10,8 @@ export default function Home() {
       <Counter />
       <br></br>
       <Timer />
+      <br></br>
+      <Apicall />
     </main>
   );
 }
