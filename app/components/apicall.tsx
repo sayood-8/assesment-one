@@ -1,30 +1,34 @@
 "use client";
 
 import { useEffect, useState } from "react";
-
+import axios, {AxiosResponse} from "axios"
 
 export default function finalTask(){
  
-const [records, setRecords] = useState([]);
+interface R{
+      title : string
+      id : number
+      completed: boolean
+}
+const [records, setRecords] = useState<R[]>([]); //specified the type of interface R
 const [error,setErrors] = useState({});
 
-interface R{
- title : string
- id : number
- completed: boolean
-}
+
  useEffect(() => {
-    
-   fetch("https://jsonplaceholder.typicode.com/users")
-   .then(response => response.json())
-   .then(res => setRecords(res.slice(0,1))) //to get 1 record rather than 1
-   .catch(errors => setErrors(errors)) // to handle any errors 
+    axios.get<R[]>("https://jsonplaceholder.typicode.com/todos")
+    .then((res :AxiosResponse) => {
+      setRecords(res.data.slice(3,4)); // just one user because no space for all
+      console.clear();
+      console.log('response: ', res.data);
+    });
     },[])
 
 return(
    <>
    <div>
-      This is the Data : {(records.length > 0) ? records.map((record:R) => (record.title)): ("loading .. ") }
+      <div>This is the Id : {(records.length > 0) ? records.map((record:R) => (record.id)): ("loading .. ") }</div>
+      <div>This is the Title : {(records.length > 0) ? records.map((record:R) => (record.title)): ("loading .. ") }</div>
+      <div>This is the completed status : {(records.length > 0) ? records.map((record:R) => (record.completed + "")): ("loading .. ") }</div>
    </div>
    </>
 )
